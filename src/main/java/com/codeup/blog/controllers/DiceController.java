@@ -16,19 +16,19 @@ public class DiceController {
         return "role-dice";
     }
 
-    @GetMapping("/roll-dice/{n}")
-    public String RandomDie(@PathVariable int n, Model viewModel){
-        String thatsIt = "Gottie";
-        String notIt = "Try again";
-        int range = (6 - 1) + 1;
-        int dice = (int) (Math.random() * range) + 1;
-        viewModel.addAttribute("n", n);
-        viewModel.addAttribute("dice", dice);
-        if (n == dice){
-            viewModel.addAttribute("thatsIt",thatsIt);
-        } else {
-            viewModel.addAttribute("notIt", notIt);
-        }
-        return "random-die";
-    }
+//    @GetMapping("/roll-dice/{n}")
+//    public String RandomDie(@PathVariable int n, Model viewModel){
+//        String thatsIt = "Gottie";
+//        String notIt = "Try again";
+//        int range = (6 - 1) + 1;
+//        int dice = (int) (Math.random() * range) + 1;
+//        viewModel.addAttribute("n", n);
+//        viewModel.addAttribute("dice", dice);
+//        if (n == dice){
+//            viewModel.addAttribute("thatsIt",thatsIt);
+//        } else {
+//            viewModel.addAttribute("notIt", notIt);
+//        }
+//        return "random-die";
+//    }
 }
