@@ -5,10 +5,7 @@ import com.codeup.blog.services.PostSvc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 
@@ -25,7 +22,7 @@ public class PostsController {
     @GetMapping("/posts")
     public String index(Model viewModel){
 //        ArrayList<Post> posts = new ArrayList<>();
-        viewModel.addAttribute("post", service.findAll());
+        viewModel.addAttribute("posts", service.findAll());
 //        posts.add(new Post("",""));
 //        posts.add(new Post("",""));
 //        viewModel.addAttribute(posts);
@@ -41,15 +38,26 @@ public class PostsController {
     }
 
     @GetMapping("/posts/create")
-    @ResponseBody
-    public String getCreate(){
-        return "";
+    public String getCreate(Model viewModel){
+        viewModel.addAttribute("post", new Post());
+        return "posts/create";
     }
 
     @PostMapping("/posts/create")
-    @ResponseBody
-    public String postCreate(){
-        return getCreate();
+    public String postCreate(@ModelAttribute Post post){
+        service.save(post);
+        return "redirect:/posts";
+    }
+
+    @GetMapping("/posts/{id}/edit")
+    public String getEdit(@PathVariable int id, Model modelView){
+        modelView.addAttribute("post", service.findOne(id));
+        return "posts/edit";
+    }
+
+    @PostMapping
+    public String postEdit(){
+        return"";
     }
 
 }
