@@ -5,10 +5,10 @@
     <title>Title</title>
 </head>
 <body>
-<nav th:fragment="nav-bar">
+<nav th:fragment="mainNavbar">
     <ul>
-        <li></li>
-        <li></li>
+        <li><a th:href="@{/posts}" th:text="Index"></a></li>
+        <li><a th:href="@{/posts/create}" th:text="Create"></a></li>
         <li></li>
         <li></li>
     </ul>
