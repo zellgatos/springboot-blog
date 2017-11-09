@@ -1,6 +1,8 @@
 package com.codeup.blog.services;
 
 import com.codeup.blog.models.Post;
+import com.codeup.blog.repositories.PostsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -8,32 +10,29 @@ import java.util.List;
 
 @Service("postsvc")
 public class PostSvc {
-    private List<Post> posts;
+    private final PostsRepository postDao;
 
-    public PostSvc(){
-        posts = new ArrayList<>();
-        createPosts();
+    // Autowire an instance of our PostsRepository in
+    @Autowired
+    public PostSvc(PostsRepository postDao) {
+        this.postDao = postDao;
     }
 
-    public List<Post> findAll(){
-        return posts;
+
+    public Post findById(long id) {
+        return postDao.findOne(id);
     }
 
-    public Post save(Post post){
-        post.setId((long) (posts.size() + 1));
-        posts.add(post);
-        return post;
+    // Iterable is a superclass of List, that is, a more generic type
+    public Iterable<Post> findAll() {
+        return postDao.findAll();
     }
 
-    public Post findOne(long id){
-        return posts.get((int) (id - 1));
+    public Post save(Post post) {
+        return postDao.save(post);
     }
 
-    private void createPosts(){
-        save(new Post("title1","description1"));
-        save(new Post("title2","description2"));
-        save(new Post("title3","description3"));
-        save(new Post("title4","description4"));
-
+    public void delete(long id) {
+        postDao.delete(id);
     }
 }

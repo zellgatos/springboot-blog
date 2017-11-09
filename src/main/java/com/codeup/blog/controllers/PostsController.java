@@ -1,6 +1,7 @@
 package com.codeup.blog.controllers;
 
 import com.codeup.blog.models.Post;
+import com.codeup.blog.repositories.PostsRepository;
 import com.codeup.blog.services.PostSvc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,10 +13,12 @@ import java.util.ArrayList;
 @Controller
 public class PostsController {
     private final PostSvc service;
+    private final PostsRepository postsDao;
 
     @Autowired
-    public PostsController(PostSvc service){
-        this.service = service;
+    public PostsController(PostSvc postSvc,PostsRepository postsDao){
+        this.postsDao = postsDao;
+        this.service = postSvc;
     }
 
 
@@ -31,7 +34,7 @@ public class PostsController {
 
     @GetMapping("/posts/{id}")
     public String postId(@PathVariable int id, Model modelView){
-        modelView.addAttribute("post", service.findOne(id));
+        modelView.addAttribute("post", service.findById((long) id));
 //        Post post = new Post("tile","body");
 //        modelView.addAttribute("post", post);
         return "posts/show";
@@ -45,19 +48,28 @@ public class PostsController {
 
     @PostMapping("/posts/create")
     public String postCreate(@ModelAttribute Post post){
-        service.save(post);
+        postsDao.save(post);
         return "redirect:/posts";
     }
 
     @GetMapping("/posts/{id}/edit")
-    public String getEdit(@PathVariable int id, Model modelView){
-        modelView.addAttribute("post", service.findOne(id));
+    public String showEditForm(Model modelView, @PathVariable long id) {
+        Post existingPost = service.findById(id);
+        modelView.addAttribute("post", existingPost);
         return "posts/edit";
     }
 
-    @PostMapping
-    public String postEdit(){
-        return"";
+    @PostMapping("/posts/{id}/edit")
+    public String updatePost(@PathVariable long id, @ModelAttribute Post post) {
+        post.setId(id);
+        service.save(post);
+
+        return "redirect:/posts/" + post.getId();
     }
 
+    @PostMapping("/posts/{id}/delete")
+    public String removeFromExistence(@PathVariable long id) {
+        service.delete(id);
+        return "redirect:/posts";
+    }
 }
