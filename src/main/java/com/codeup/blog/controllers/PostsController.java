@@ -1,7 +1,9 @@
 package com.codeup.blog.controllers;
 
 import com.codeup.blog.models.Post;
+import com.codeup.blog.models.User;
 import com.codeup.blog.repositories.PostsRepository;
+import com.codeup.blog.repositories.UserRepository;
 import com.codeup.blog.services.PostSvc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,11 +15,11 @@ import java.util.ArrayList;
 @Controller
 public class PostsController {
     private final PostSvc service;
-    private final PostsRepository postsDao;
+    private final UserRepository userDao;
 
     @Autowired
-    public PostsController(PostSvc postSvc,PostsRepository postsDao){
-        this.postsDao = postsDao;
+    public PostsController(PostSvc postSvc,UserRepository userDoa){
+        this.userDao = userDoa;
         this.service = postSvc;
     }
 
@@ -26,9 +28,6 @@ public class PostsController {
     public String index(Model viewModel){
 //        ArrayList<Post> posts = new ArrayList<>();
         viewModel.addAttribute("posts", service.findAll());
-//        posts.add(new Post("",""));
-//        posts.add(new Post("",""));
-//        viewModel.addAttribute(posts);
         return "posts/index";
     }
 
@@ -48,7 +47,9 @@ public class PostsController {
 
     @PostMapping("/posts/create")
     public String postCreate(@ModelAttribute Post post){
-        postsDao.save(post);
+        User user = userDao.findOne(2L);
+        post.setUser(user);
+        service.save(post);
         return "redirect:/posts";
     }
 
@@ -61,6 +62,7 @@ public class PostsController {
 
     @PostMapping("/posts/{id}/edit")
     public String updatePost(@PathVariable long id, @ModelAttribute Post post) {
+
         post.setId(id);
         service.save(post);
 
