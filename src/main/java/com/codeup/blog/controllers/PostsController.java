@@ -2,23 +2,20 @@ package com.codeup.blog.controllers;
 
 import com.codeup.blog.models.Post;
 import com.codeup.blog.models.User;
-import com.codeup.blog.repositories.PostsRepository;
-import com.codeup.blog.repositories.UserRepository;
+import com.codeup.blog.repositories.UsersRepository;
 import com.codeup.blog.services.PostSvc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-
 @Controller
 public class PostsController {
     private final PostSvc service;
-    private final UserRepository userDao;
+    private final UsersRepository userDao;
 
     @Autowired
-    public PostsController(PostSvc postSvc,UserRepository userDoa){
+    public PostsController(PostSvc postSvc, UsersRepository userDoa){
         this.userDao = userDoa;
         this.service = postSvc;
     }
@@ -32,10 +29,8 @@ public class PostsController {
     }
 
     @GetMapping("/posts/{id}")
-    public String postId(@PathVariable int id, Model modelView){
-        modelView.addAttribute("post", service.findById((long) id));
-//        Post post = new Post("tile","body");
-//        modelView.addAttribute("post", post);
+    public String showPost(@PathVariable int id, Model vModel){
+        vModel.addAttribute("post", service.findById(id));
         return "posts/show";
     }
 
@@ -47,7 +42,7 @@ public class PostsController {
 
     @PostMapping("/posts/create")
     public String postCreate(@ModelAttribute Post post){
-        User user = userDao.findOne(2L);
+        User user = userDao.findOne(3L);
         post.setUser(user);
         service.save(post);
         return "redirect:/posts";

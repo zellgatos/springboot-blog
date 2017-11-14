@@ -9,7 +9,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -33,7 +33,8 @@ public class User {
         password = copy.password;
     }
 
-    public User(String username, String password, String email){
+    public User(long id ,String username, String password, String email){
+        this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
