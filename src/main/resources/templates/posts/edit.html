@@ -5,7 +5,7 @@
 <body>
 <nav th:include="fragments/navbar :: mainNavbar"></nav>
 
-<form th:action="${'/posts/' + post.id + '/edit'}" method="post" th:object="${post}">
+<form th:action="${'/posts/' + post.id + '/edit'}" th:method="post" th:object="${post}">
     Title:
     <input name="title" th:value="${post.title}" th:field="*{title}" />
     <br />

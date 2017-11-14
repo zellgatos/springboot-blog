@@ -9,8 +9,12 @@
     <ul>
         <li><a th:href="@{/posts}" th:text="Index"></a></li>
         <li><a th:href="@{/posts/create}" th:text="Create"></a></li>
-        <li></li>
-        <li></li>
+        <li>
+            <form th:action="@{/logout}" th:method="post">
+            <button class="btn-link btn" style="margin-top: 8px">Logout</button>
+            </form>
+        </li>
+        <li><a th:href="@{/register}" th:text="Register"></a></li>
     </ul>
 </nav>
 </body>

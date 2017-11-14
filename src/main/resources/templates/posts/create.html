@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml"
+      lang="en">
 <head th:replace="fragments/head :: main-header(title) ">
 </head>
 <body>
 <nav th:include="fragments/navbar :: mainNavbar"></nav>
 
-<form action="/posts/create" method="post" th:object="${post}">
+<form th:action="@{/posts/create}" th:method="post" th:object="${post}">
     Title:
     <input name="title" th:field="*{title}" />
     <br />
